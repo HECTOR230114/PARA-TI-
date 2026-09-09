@@ -1,0 +1,2600 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Para ti ♡</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <style>
+        /* ===== VARIABLES CSS GLOBALES ===== */
+        :root {
+            --background: #05050f;
+            --background-secondary: #0a0a1a;
+            --surface: rgba(255, 255, 255, 0.06);
+            --surface-hover: rgba(255, 255, 255, 0.12);
+            --text: #f0edff;
+            --text-secondary: #a8a3c0;
+            --pink: #ec4899;
+            --purple: #8b5cf6;
+            --border: rgba(139, 92, 246, 0.2);
+            --glow: 0 0 30px rgba(236, 72, 153, 0.15);
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            --transition: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            --card-radius: 20px;
+            --font-serif: 'Playfair Display', serif;
+            --font-sans: 'Inter', sans-serif;
+        }
+
+        [data-theme="light"] {
+            --background: #f8f6ff;
+            --background-secondary: #f0edff;
+            --surface: rgba(139, 92, 246, 0.08);
+            --surface-hover: rgba(139, 92, 246, 0.15);
+            --text: #1a1430;
+            --text-secondary: #5a5280;
+            --border: rgba(139, 92, 246, 0.25);
+            --glow: 0 0 30px rgba(236, 72, 153, 0.1);
+            --glass-bg: rgba(255, 255, 255, 0.7);
+            --shadow: 0 8px 32px rgba(139, 92, 246, 0.12);
+        }
+
+        /* ===== RESET Y BASE ===== */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; font-size: 16px; }
+        body {
+            font-family: var(--font-sans);
+            background: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+            transition: background var(--transition), color var(--transition);
+            overflow-x: hidden;
+        }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--background-secondary); }
+        ::-webkit-scrollbar-thumb { background: linear-gradient(135deg, var(--purple), var(--pink)); border-radius: 4px; }
+
+        h1, h2, h3, h4, h5 { font-family: var(--font-serif); font-weight: 700; }
+        h1 { font-size: clamp(2.5rem, 8vw, 5rem); line-height: 1.1; }
+        h2 { font-size: clamp(2rem, 5vw, 3.5rem); line-height: 1.2; }
+        h3 { font-size: clamp(1.3rem, 2.5vw, 1.8rem); }
+        h4 { font-size: clamp(1rem, 1.5vw, 1.2rem); }
+
+        /* ===== NAVBAR ===== */
+        #navbar {
+            position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            transition: background var(--transition), border-color var(--transition);
+        }
+        .nav-container {
+            max-width: 1200px; margin: 0 auto; padding: 0 1.5rem;
+            display: flex; align-items: center; justify-content: space-between; height: 70px;
+        }
+        .nav-logo {
+            font-family: var(--font-serif); font-size: 1.3rem; font-weight: 700;
+            text-decoration: none;
+            background: linear-gradient(135deg, var(--purple), var(--pink));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+        }
+        .nav-menu {
+            display: flex; list-style: none; gap: 0.25rem; align-items: center;
+        }
+        .nav-menu a {
+            color: var(--text-secondary); text-decoration: none; font-size: 0.85rem; font-weight: 500;
+            padding: 0.5rem 1rem; border-radius: 999px; transition: all var(--transition);
+            position: relative; font-family: var(--font-sans); cursor: pointer;
+        }
+        .nav-menu a:hover { color: var(--text); background: var(--surface); }
+        .nav-menu a.active { color: var(--text); background: var(--surface); }
+        .nav-menu a.active::after {
+            content: ''; position: absolute; bottom: 4px; left: 50%; transform: translateX(-50%);
+            width: 24px; height: 2px; border-radius: 2px;
+            background: linear-gradient(90deg, var(--purple), var(--pink));
+        }
+        .nav-actions { display: flex; gap: 0.5rem; align-items: center; }
+        .nav-icon-btn {
+            background: var(--surface); border: 1px solid var(--border); color: var(--text-secondary);
+            width: 38px; height: 38px; border-radius: 50%; cursor: pointer; font-size: 1.1rem;
+            transition: all var(--transition); display: flex; align-items: center; justify-content: center;
+        }
+        .nav-icon-btn:hover { background: var(--surface-hover); color: var(--text); transform: scale(1.05); box-shadow: var(--glow); }
+
+        .nav-toggle {
+            display: none; flex-direction: column; gap: 5px; background: none; border: none;
+            cursor: pointer; padding: 5px;
+        }
+        .nav-toggle span { display: block; width: 25px; height: 2px; background: var(--text); border-radius: 2px; transition: all var(--transition); }
+        .nav-toggle.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+        .nav-toggle.active span:nth-child(2) { opacity: 0; }
+        .nav-toggle.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+        /* ===== LOADING ===== */
+        .loading-spinner {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            display: flex; align-items: center; justify-content: center;
+            background: var(--background); z-index: 9999; pointer-events: none; opacity: 0; transition: opacity 0.3s;
+        }
+        .loading-spinner.active { opacity: 1; pointer-events: all; }
+        .spinner {
+            width: 50px; height: 50px; border-radius: 50%;
+            border: 3px solid var(--border); border-top-color: var(--pink); border-bottom-color: var(--purple);
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* ===== CONTENIDO ===== */
+        #app { min-height: 100vh; padding-top: 70px; }
+        #content { min-height: calc(100vh - 70px); animation: fadeIn 0.5s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        .glass {
+            background: var(--glass-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border); border-radius: 20px; box-shadow: var(--shadow);
+        }
+
+        .btn-primary {
+            display: inline-block; padding: 0.9rem 2.5rem;
+            background: linear-gradient(135deg, var(--purple), var(--pink)); color: #fff; border: none;
+            border-radius: 999px; font-family: var(--font-sans); font-weight: 600; font-size: 1rem;
+            cursor: pointer; transition: all var(--transition); text-decoration: none;
+            box-shadow: 0 4px 20px rgba(139, 92, 246, 0.3);
+        }
+        .btn-primary:hover { transform: translateY(-2px) scale(1.02); box-shadow: 0 8px 40px rgba(236, 72, 153, 0.35); }
+
+        .section-padding { padding: 4rem 1.5rem; }
+        @media (min-width: 768px) { .section-padding { padding: 6rem 2rem; } }
+        .section-header { text-align: center; margin-bottom: 3rem; }
+        .section-header p { color: var(--text-secondary); font-size: 1.1rem; max-width: 600px; margin: 0 auto; }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .nav-toggle { display: flex; }
+            .nav-menu {
+                position: fixed; top: 70px; right: -100%; width: 280px; height: calc(100vh - 70px);
+                background: var(--glass-bg); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+                flex-direction: column; padding: 2rem 1.5rem; gap: 0.5rem;
+                transition: right 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+                border-left: 1px solid var(--border); overflow-y: auto; align-items: stretch;
+            }
+            .nav-menu.active { right: 0; }
+            .nav-menu a { padding: 0.8rem 1.2rem; font-size: 1rem; border-radius: 12px; }
+            .nav-menu a.active::after { display: none; }
+            .nav-menu a.active { background: linear-gradient(135deg, var(--purple), var(--pink)); color: #fff; }
+            #app { padding-top: 60px; }
+            .nav-menu { top: 60px; height: calc(100vh - 60px); }
+            .nav-container { height: 60px; padding: 0 1rem; }
+            .nav-logo { font-size: 1.1rem; }
+        }
+
+        /* ===== HERO ===== */
+        .hero-section {
+            position: relative; min-height: calc(100vh - 70px);
+            display: flex; align-items: center; justify-content: center; overflow: hidden;
+            background: var(--background);
+        }
+        .hero-bg { position: absolute; inset: 0; z-index: 0; }
+        .hero-bg canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+        .hero-overlay {
+            position: absolute; inset: 0;
+            background: radial-gradient(ellipse at center, transparent 30%, var(--background) 90%);
+            z-index: 1;
+        }
+        .hero-content {
+            position: relative; z-index: 2; text-align: center; max-width: 800px; padding: 2rem;
+            animation: heroFadeIn 1.5s ease;
+        }
+        @keyframes heroFadeIn { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+        .hero-eyebrow {
+            font-size: 0.8rem; letter-spacing: 4px; text-transform: uppercase;
+            color: var(--text-secondary); font-weight: 500; margin-bottom: 1rem;
+        }
+        .hero-title {
+            font-family: var(--font-serif); font-size: clamp(3.5rem, 12vw, 6.5rem); font-weight: 700;
+            background: linear-gradient(135deg, var(--purple), var(--pink));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+            margin-bottom: 0.5rem; line-height: 1.1;
+        }
+        .hero-subtitle {
+            font-family: var(--font-serif); font-size: clamp(1.3rem, 3vw, 2rem);
+            font-weight: 400; font-style: italic; color: var(--text-secondary); margin-bottom: 1.5rem;
+        }
+        .hero-text {
+            font-size: clamp(1rem, 1.3vw, 1.2rem); color: var(--text-secondary);
+            line-height: 1.8; margin-bottom: 2.5rem; max-width: 600px; margin-left: auto; margin-right: auto;
+        }
+        .scroll-indicator {
+            position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
+            display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+            animation: bounce 2s infinite;
+        }
+        .scroll-line {
+            display: block; width: 2px; height: 40px;
+            background: linear-gradient(to bottom, var(--purple), var(--pink));
+            border-radius: 2px; animation: scrollLine 2s ease-in-out infinite;
+        }
+        @keyframes scrollLine { 0%, 100% { transform: scaleY(0.4); opacity: 0.3; } 50% { transform: scaleY(1); opacity: 1; } }
+        @keyframes bounce { 0%, 100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(-8px); } }
+
+        /* ===== FOTOS ===== */
+        .fotos-filters {
+            display: flex; gap: 0.5rem; flex-wrap: wrap; justify-content: center; margin-bottom: 2.5rem;
+        }
+        .filter-btn {
+            padding: 0.5rem 1.5rem; border: 1px solid var(--border); border-radius: 999px;
+            background: var(--surface); color: var(--text-secondary);
+            font-family: var(--font-sans); font-size: 0.85rem; font-weight: 500;
+            cursor: pointer; transition: all var(--transition);
+        }
+        .filter-btn:hover { background: var(--surface-hover); color: var(--text); }
+        .filter-btn.active {
+            background: linear-gradient(135deg, var(--purple), var(--pink)); color: #fff;
+            border-color: transparent; box-shadow: 0 0 30px rgba(139, 92, 246, 0.2);
+        }
+        .fotos-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem; max-width: 1200px; margin: 0 auto;
+        }
+        .foto-item {
+            position: relative; border-radius: 20px; overflow: hidden; cursor: pointer;
+            background: var(--surface); border: 1px solid var(--border);
+            transition: all var(--transition); aspect-ratio: 4/3;
+        }
+        .foto-item:hover { transform: scale(1.03); box-shadow: var(--glow); border-color: var(--purple); }
+        .foto-item img, .foto-item video {
+            width: 100%; height: 100%; object-fit: cover; display: block;
+            transition: transform 0.6s ease;
+        }
+        .foto-item:hover img, .foto-item:hover video { transform: scale(1.08); }
+        .foto-item figcaption {
+            position: absolute; bottom: 0; left: 0; right: 0;
+            padding: 1.5rem 1.2rem 1.2rem;
+            background: linear-gradient(transparent, rgba(0,0,0,0.8));
+            transform: translateY(100%); transition: transform 0.4s ease;
+        }
+        .foto-item:hover figcaption { transform: translateY(0); }
+        .foto-item figcaption h4 { font-size: 1rem; color: #fff; margin-bottom: 0.2rem; }
+        .foto-item figcaption span { font-size: 0.8rem; color: rgba(255,255,255,0.7); }
+        .video-item::after {
+            content: '▶'; position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%); font-size: 3rem;
+            color: rgba(255,255,255,0.8); text-shadow: 0 0 30px rgba(0,0,0,0.5);
+            opacity: 0; transition: opacity 0.3s ease; pointer-events: none;
+        }
+        .video-item:hover::after { opacity: 1; }
+        @media (max-width: 768px) { .fotos-grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1rem; } }
+        @media (max-width: 480px) {
+            .fotos-grid { grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+            .foto-item figcaption { padding: 0.8rem 0.8rem 0.6rem; }
+            .foto-item figcaption h4 { font-size: 0.8rem; }
+        }
+
+        /* ===== CANCIONES ===== */
+        .player-container { max-width: 800px; margin: 0 auto; }
+        .player-card { padding: 2rem; text-align: center; margin-bottom: 2rem; }
+        .player-artwork { width: 200px; height: 200px; border-radius: 20px; overflow: hidden; margin: 0 auto 1.5rem; box-shadow: 0 8px 40px rgba(0,0,0,0.3); }
+        .player-artwork img { width: 100%; height: 100%; object-fit: cover; }
+        .player-info h3 { font-size: 1.4rem; margin-bottom: 0.2rem; }
+        .player-info p { color: var(--text-secondary); font-size: 0.95rem; }
+        .player-controls { display: flex; align-items: center; justify-content: center; gap: 1.5rem; margin: 1.5rem 0; }
+        .player-btn {
+            background: var(--surface); border: 1px solid var(--border); border-radius: 50%;
+            width: 44px; height: 44px; display: flex; align-items: center; justify-content: center;
+            color: var(--text); cursor: pointer; transition: all var(--transition);
+        }
+        .player-btn:hover { background: var(--surface-hover); transform: scale(1.05); box-shadow: var(--glow); }
+        .play-main { width: 60px; height: 60px; background: linear-gradient(135deg, var(--purple), var(--pink)); border: none; color: #fff; box-shadow: 0 4px 30px rgba(139,92,246,0.3); }
+        .play-main:hover { transform: scale(1.08); box-shadow: 0 8px 50px rgba(236,72,153,0.4); }
+        .player-progress { display: flex; align-items: center; gap: 1rem; margin: 1rem 0; }
+        .player-progress span { font-size: 0.8rem; color: var(--text-secondary); min-width: 40px; }
+        .progress-bar { flex: 1; height: 4px; background: var(--surface); border-radius: 4px; cursor: pointer; position: relative; }
+        .progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--purple), var(--pink)); border-radius: 4px; transition: width 0.1s linear; }
+        .player-volume { display: flex; align-items: center; gap: 0.75rem; justify-content: center; }
+        .volume-slider { width: 80px; height: 4px; -webkit-appearance: none; background: var(--surface); border-radius: 4px; outline: none; }
+        .volume-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 12px; height: 12px; border-radius: 50%; background: linear-gradient(135deg, var(--purple), var(--pink)); cursor: pointer; }
+        .playlist { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+        .playlist-item {
+            display: flex; align-items: center; gap: 1rem; padding: 0.8rem 1.2rem;
+            border-radius: 12px; background: var(--surface); border: 1px solid transparent;
+            cursor: pointer; transition: all var(--transition);
+        }
+        .playlist-item:hover { background: var(--surface-hover); border-color: var(--border); }
+        .playlist-item.active { border-color: var(--purple); background: var(--surface-hover); box-shadow: var(--glow); }
+        .play-btn { font-size: 0.8rem; color: var(--text-secondary); width: 24px; }
+        .song-title { flex: 1; font-weight: 500; }
+        .song-artist { color: var(--text-secondary); font-size: 0.85rem; }
+        .song-duration { color: var(--text-secondary); font-size: 0.8rem; }
+        @media (max-width: 600px) {
+            .player-card { padding: 1.5rem; }
+            .player-artwork { width: 150px; height: 150px; }
+            .play-main { width: 50px; height: 50px; }
+            .playlist-item { padding: 0.6rem 0.8rem; flex-wrap: wrap; }
+        }
+
+        /* ===== CARTA - NUEVO DISEÑO MEJORADO ===== */
+        .carta-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .carta-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--card-radius);
+            padding: 2rem 1.5rem;
+            cursor: pointer;
+            transition: all var(--transition);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            min-height: 260px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(8px);
+        }
+
+        .carta-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.05), rgba(236, 72, 153, 0.05));
+            opacity: 0;
+            transition: opacity var(--transition);
+            border-radius: var(--card-radius);
+        }
+
+        .carta-card:hover::before {
+            opacity: 1;
+        }
+
+        .carta-card:hover {
+            transform: translateY(-10px) scale(1.01);
+            border-color: var(--purple);
+            box-shadow: var(--glow), 0 12px 60px rgba(139, 92, 246, 0.15);
+        }
+
+        .carta-card .carta-icon {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            display: block;
+            position: relative;
+            z-index: 1;
+        }
+
+        .carta-card .carta-titulo {
+            font-family: var(--font-serif);
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 0.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .carta-card .carta-descripcion {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+            position: relative;
+            z-index: 1;
+        }
+
+        .carta-card .carta-badge {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: linear-gradient(135deg, var(--purple), var(--pink));
+            color: #fff;
+            font-size: 0.7rem;
+            font-weight: 600;
+            padding: 0.2rem 0.8rem;
+            border-radius: 999px;
+            letter-spacing: 0.5px;
+            z-index: 2;
+            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+        }
+
+        .carta-card .carta-corazon {
+            position: absolute;
+            bottom: 1rem;
+            left: 1rem;
+            font-size: 1.2rem;
+            opacity: 0.3;
+            z-index: 1;
+        }
+
+        .carta-card .carta-flores {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            font-size: 1.5rem;
+            opacity: 0.2;
+            z-index: 1;
+        }
+
+        /* Modal de carta - versión ampliada y mejorada */
+        .carta-modal-content {
+            max-width: 750px;
+            width: 100%;
+            background: var(--background-secondary);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 2.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .carta-modal-content::before {
+            content: '✧';
+            position: absolute;
+            top: -20px;
+            right: -10px;
+            font-size: 12rem;
+            opacity: 0.03;
+            transform: rotate(15deg);
+        }
+
+        .carta-modal-content .carta-modal-titulo {
+            font-family: var(--font-serif);
+            font-size: 2rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 2rem;
+            background: linear-gradient(135deg, var(--purple), var(--pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .carta-modal-content .carta-modal-texto {
+            font-family: var(--font-serif);
+            font-size: 1.1rem;
+            line-height: 2.2;
+            color: var(--text);
+            padding: 1rem 0.5rem;
+        }
+
+        .carta-modal-content .carta-modal-texto p {
+            margin-bottom: 1.2rem;
+            opacity: 0;
+            animation: revealText 0.6s ease forwards;
+            padding-left: 0.5rem;
+            border-left: 2px solid transparent;
+            transition: border-color 0.3s ease;
+        }
+
+        .carta-modal-content .carta-modal-texto p:hover {
+            border-left-color: var(--purple);
+        }
+
+        .carta-modal-content .carta-modal-texto p:nth-child(1) { animation-delay: 0.05s; }
+        .carta-modal-content .carta-modal-texto p:nth-child(2) { animation-delay: 0.1s; }
+        .carta-modal-content .carta-modal-texto p:nth-child(3) { animation-delay: 0.15s; }
+        .carta-modal-content .carta-modal-texto p:nth-child(4) { animation-delay: 0.2s; }
+        .carta-modal-content .carta-modal-texto p:nth-child(5) { animation-delay: 0.25s; }
+        .carta-modal-content .carta-modal-texto p:nth-child(6) { animation-delay: 0.3s; }
+        .carta-modal-content .carta-modal-texto p:nth-child(7) { animation-delay: 0.35s; }
+        .carta-modal-content .carta-modal-texto p:nth-child(8) { animation-delay: 0.4s; }
+        .carta-modal-content .carta-modal-texto p:nth-child(9) { animation-delay: 0.45s; }
+        .carta-modal-content .carta-modal-texto p:nth-child(10) { animation-delay: 0.5s; }
+
+        .carta-modal-content .carta-firma {
+            font-style: italic;
+            text-align: right;
+            font-size: 1.3rem;
+            margin-top: 2rem;
+            background: linear-gradient(135deg, var(--purple), var(--pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            padding-right: 1rem;
+            border-right: 3px solid var(--purple);
+        }
+
+        .carta-modal-content .carta-fecha {
+            text-align: center;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-top: 1rem;
+            font-style: italic;
+        }
+
+        @keyframes revealText {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 600px) {
+            .carta-container {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            .carta-card {
+                min-height: 200px;
+                padding: 1.5rem 1.2rem;
+            }
+            .carta-modal-content {
+                padding: 1.5rem;
+                margin: 0.5rem;
+            }
+            .carta-modal-content .carta-modal-titulo {
+                font-size: 1.5rem;
+            }
+            .carta-modal-content .carta-modal-texto {
+                font-size: 1rem;
+                line-height: 1.9;
+            }
+            .carta-modal-content .carta-firma {
+                font-size: 1.1rem;
+            }
+        }
+
+        /* ===== FONDO EDITABLE ===== */
+        .bg-editor-controls {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1rem;
+            box-shadow: var(--shadow);
+            transition: all var(--transition);
+            max-width: 220px;
+        }
+
+        .bg-editor-controls.hidden {
+            transform: translateY(120%);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .bg-editor-controls label {
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .bg-editor-controls .color-row {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .bg-editor-controls input[type="color"] {
+            width: 32px;
+            height: 32px;
+            border: 2px solid var(--border);
+            border-radius: 50%;
+            cursor: pointer;
+            padding: 0;
+            background: transparent;
+        }
+
+        .bg-editor-controls input[type="color"]::-webkit-color-swatch-wrapper {
+            padding: 0;
+        }
+        .bg-editor-controls input[type="color"]::-webkit-color-swatch {
+            border: none;
+            border-radius: 50%;
+        }
+
+        .bg-editor-controls .preset-colors {
+            display: flex;
+            gap: 0.3rem;
+            flex-wrap: wrap;
+        }
+
+        .bg-editor-controls .preset-btn {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all var(--transition);
+        }
+
+        .bg-editor-controls .preset-btn:hover {
+            transform: scale(1.15);
+            border-color: var(--purple);
+        }
+
+        .bg-editor-controls .preset-btn.active {
+            border-color: #fff;
+            box-shadow: 0 0 12px rgba(139, 92, 246, 0.4);
+        }
+
+        .bg-editor-toggle {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 998;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text);
+            cursor: pointer;
+            transition: all var(--transition);
+            font-size: 1.2rem;
+        }
+
+        .bg-editor-toggle:hover {
+            background: var(--surface-hover);
+            transform: scale(1.05);
+            box-shadow: var(--glow);
+        }
+
+        @media (max-width: 768px) {
+            .bg-editor-controls {
+                bottom: 1rem;
+                right: 1rem;
+                padding: 0.8rem;
+                max-width: 180px;
+            }
+            .bg-editor-toggle {
+                bottom: 1rem;
+                right: 1rem;
+                width: 38px;
+                height: 38px;
+                font-size: 1rem;
+            }
+        }
+
+        /* ===== MODAL ===== */
+        .modal-overlay {
+            position: fixed; inset: 0;
+            background: rgba(0,0,0,0.7); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            z-index: 9999; display: flex; align-items: center; justify-content: center;
+            padding: 1.5rem; animation: modalFadeIn 0.3s ease;
+        }
+        @keyframes modalFadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .modal-content {
+            position: relative; max-width: 900px; width: 100%; max-height: 90vh;
+            background: var(--background-secondary); border: 1px solid var(--border);
+            border-radius: 24px; padding: 2rem; overflow-y: auto;
+            animation: modalSlideIn 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+        @keyframes modalSlideIn { from { opacity: 0; transform: scale(0.95) translateY(20px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+        .modal-close {
+            position: absolute; top: 0.75rem; right: 0.75rem;
+            background: var(--surface); border: 1px solid var(--border); border-radius: 50%;
+            width: 40px; height: 40px; font-size: 1.2rem; color: var(--text);
+            cursor: pointer; transition: all var(--transition); z-index: 10;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .modal-close:hover { background: var(--surface-hover); transform: rotate(90deg); }
+        .modal-body { padding: 0.5rem 0; }
+        .modal-body img, .modal-body video { width: 100%; max-height: 70vh; object-fit: contain; border-radius: 12px; display: block; }
+        .modal-data { margin-top: 1rem; text-align: center; }
+        .modal-data h3 { font-family: var(--font-serif); font-size: 1.3rem; margin-bottom: 0.2rem; }
+        .modal-data span { color: var(--text-secondary); font-size: 0.9rem; }
+        @media (max-width: 600px) { .modal-content { padding: 1.5rem; border-radius: 16px; } }
+
+        /* ===== NUEVAS SECCIONES EN INICIO ===== */
+        .inicio-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+            margin-top: 3rem;
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .feature-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.8rem 1.5rem;
+            text-align: center;
+            transition: all var(--transition);
+            cursor: default;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--purple);
+            box-shadow: var(--glow);
+        }
+
+        .feature-card .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.8rem;
+            display: block;
+        }
+
+        .feature-card h4 {
+            font-family: var(--font-sans);
+            font-weight: 600;
+            font-size: 1rem;
+            color: var(--text);
+            margin-bottom: 0.3rem;
+        }
+
+        .feature-card p {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .inicio-counter {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2.5rem;
+            flex-wrap: wrap;
+        }
+
+        .counter-item {
+            text-align: center;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.2rem 2rem;
+            min-width: 100px;
+            transition: all var(--transition);
+        }
+
+        .counter-item:hover {
+            transform: translateY(-3px);
+            border-color: var(--purple);
+            box-shadow: var(--glow);
+        }
+
+        .counter-item .counter-number {
+            font-family: var(--font-serif);
+            font-size: 2.2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--purple), var(--pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .counter-item .counter-label {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .inicio-quote {
+            font-family: var(--font-serif);
+            font-style: italic;
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 2rem auto 0;
+            padding: 1.5rem;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            line-height: 1.8;
+            transition: all var(--transition);
+        }
+
+        .inicio-quote:hover {
+            border-color: var(--purple);
+            color: var(--text);
+        }
+
+        .inicio-testimonios {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2.5rem;
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .testimonio-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all var(--transition);
+        }
+
+        .testimonio-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--purple);
+            box-shadow: var(--glow);
+        }
+
+        .testimonio-card .testimonio-texto {
+            font-style: italic;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.8;
+        }
+
+        .testimonio-card .testimonio-autor {
+            margin-top: 0.8rem;
+            font-weight: 600;
+            color: var(--text);
+            font-size: 0.9rem;
+        }
+
+        .inicio-timeline {
+            max-width: 800px;
+            margin: 2.5rem auto 0;
+            position: relative;
+            padding-left: 2rem;
+        }
+
+        .inicio-timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--purple), var(--pink));
+            border-radius: 2px;
+        }
+
+        .timeline-item {
+            position: relative;
+            padding: 1rem 0 1rem 2rem;
+            border-left: 2px solid transparent;
+            transition: all var(--transition);
+        }
+
+        .timeline-item:hover {
+            border-left-color: var(--purple);
+            padding-left: 2.5rem;
+        }
+
+        .timeline-item::before {
+            content: '✦';
+            position: absolute;
+            left: -0.9rem;
+            top: 1.2rem;
+            color: var(--purple);
+            font-size: 1.2rem;
+        }
+
+        .timeline-item .timeline-fecha {
+            font-size: 0.75rem;
+            color: var(--purple);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .timeline-item .timeline-texto {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* ===== NUEVOS BOTONES DE NAVEGACIÓN RÁPIDA ===== */
+        .quick-nav {
+            display: flex;
+            gap: 0.75rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin: 2rem 0 1rem;
+        }
+
+        .quick-nav .quick-btn {
+            padding: 0.6rem 1.5rem;
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            background: var(--surface);
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all var(--transition);
+            text-decoration: none;
+            font-family: var(--font-sans);
+        }
+
+        .quick-nav .quick-btn:hover {
+            background: var(--surface-hover);
+            color: var(--text);
+            border-color: var(--purple);
+        }
+
+        .quick-nav .quick-btn.primary {
+            background: linear-gradient(135deg, var(--purple), var(--pink));
+            color: #fff;
+            border-color: transparent;
+        }
+
+        .quick-nav .quick-btn.primary:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 20px rgba(139, 92, 246, 0.3);
+        }
+
+        /* ===== SECCIÓN DE FRASES EN INICIO ===== */
+        .inicio-frases {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2.5rem;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .frase-item {
+            text-align: center;
+            padding: 1.2rem;
+            background: var(--surface);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            transition: all var(--transition);
+        }
+
+        .frase-item:hover {
+            border-color: var(--purple);
+            transform: scale(1.02);
+        }
+
+        .frase-item .frase-texto {
+            font-family: var(--font-serif);
+            font-style: italic;
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        .frase-item .frase-autor {
+            font-size: 0.75rem;
+            color: var(--purple);
+            margin-top: 0.5rem;
+            font-weight: 500;
+        }
+
+        /* ===== SECCIÓN DE ESTADÍSTICAS EN INICIO ===== */
+        .inicio-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 1rem;
+            background: var(--surface);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+
+        .stat-item .stat-number {
+            font-family: var(--font-serif);
+            font-size: 2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--purple), var(--pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-item .stat-label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        /* ===== SECCIÓN DE MOMENTOS DESTACADOS EN FOTOS ===== */
+        .fotos-destacados {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            max-width: 1200px;
+            margin: 2rem auto 0;
+        }
+
+        .destacado-item {
+            position: relative;
+            border-radius: 16px;
+            overflow: hidden;
+            aspect-ratio: 1/1;
+            cursor: pointer;
+            border: 1px solid var(--border);
+            transition: all var(--transition);
+        }
+
+        .destacado-item:hover {
+            transform: scale(1.03);
+            border-color: var(--purple);
+            box-shadow: var(--glow);
+        }
+
+        .destacado-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .destacado-item .destacado-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(transparent, rgba(0,0,0,0.6));
+            display: flex;
+            align-items: flex-end;
+            padding: 1rem;
+            opacity: 0;
+            transition: opacity var(--transition);
+        }
+
+        .destacado-item:hover .destacado-overlay {
+            opacity: 1;
+        }
+
+        .destacado-item .destacado-overlay span {
+            color: #fff;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        /* ===== SECCIÓN DE PLAYLIST DESTACADA EN CANCIONES ===== */
+        .canciones-destacadas {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+            max-width: 800px;
+            margin: 2rem auto 0;
+        }
+
+        .cancion-destacada {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.2rem;
+            text-align: center;
+            transition: all var(--transition);
+            cursor: pointer;
+        }
+
+        .cancion-destacada:hover {
+            transform: translateY(-3px);
+            border-color: var(--purple);
+            box-shadow: var(--glow);
+        }
+
+        .cancion-destacada .cancion-icon {
+            font-size: 2rem;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .cancion-destacada h4 {
+            font-family: var(--font-sans);
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .cancion-destacada p {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        /* ===== ANIMACIONES ADICIONALES ===== */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .float-animation {
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .pulse-animation {
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @media (max-width: 768px) {
+            .inicio-features {
+                grid-template-columns: 1fr 1fr;
+                gap: 1rem;
+            }
+            .feature-card {
+                padding: 1.2rem 1rem;
+            }
+            .inicio-counter {
+                gap: 1rem;
+            }
+            .counter-item {
+                padding: 1rem 1.5rem;
+                min-width: 80px;
+            }
+            .inicio-testimonios {
+                grid-template-columns: 1fr;
+            }
+            .inicio-frases {
+                grid-template-columns: 1fr 1fr;
+            }
+            .inicio-stats {
+                grid-template-columns: 1fr 1fr;
+            }
+            .fotos-destacados {
+                grid-template-columns: 1fr 1fr;
+            }
+            .canciones-destacadas {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .inicio-features {
+                grid-template-columns: 1fr;
+            }
+            .inicio-frases {
+                grid-template-columns: 1fr;
+            }
+            .inicio-stats {
+                grid-template-columns: 1fr 1fr;
+            }
+            .fotos-destacados {
+                grid-template-columns: 1fr 1fr;
+            }
+            .canciones-destacadas {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        /* ===== BOTÓN DE VOLVER ARRIBA ===== */
+        .back-to-top {
+            position: fixed;
+            bottom: 6rem;
+            right: 2rem;
+            z-index: 997;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text);
+            cursor: pointer;
+            transition: all var(--transition);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .back-to-top.visible {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .back-to-top:hover {
+            background: var(--surface-hover);
+            transform: scale(1.05);
+            box-shadow: var(--glow);
+        }
+
+        @media (max-width: 768px) {
+            .back-to-top {
+                bottom: 5rem;
+                right: 1rem;
+                width: 36px;
+                height: 36px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== NAVBAR ===== -->
+    <nav id="navbar" role="navigation" aria-label="Navegación principal">
+        <div class="nav-container">
+            <a href="#" class="nav-logo" onclick="navigateTo('inicio')">♡ Para ti</a>
+            <button class="nav-toggle" id="navToggle" aria-label="Abrir menú" aria-expanded="false">
+                <span></span><span></span><span></span>
+            </button>
+            <ul class="nav-menu" id="navMenu" role="menubar">
+                <li role="none"><a role="menuitem" class="nav-link active" data-section="inicio" onclick="navigateTo('inicio')">Inicio</a></li>
+                <li role="none"><a role="menuitem" class="nav-link" data-section="fotos" onclick="navigateTo('fotos')">Fotos</a></li>
+                <li role="none"><a role="menuitem" class="nav-link" data-section="canciones" onclick="navigateTo('canciones')">Canciones</a></li>
+                <li role="none"><a role="menuitem" class="nav-link" data-section="carta" onclick="navigateTo('carta')">Carta</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button class="nav-icon-btn" id="themeToggle" aria-label="Cambiar tema">🌙</button>
+                <button class="nav-icon-btn" id="favoritesBtn" aria-label="Favoritos">♡</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ===== MAIN ===== -->
+    <main id="app" role="main">
+        <div class="loading-spinner" id="loadingSpinner" aria-hidden="true"><div class="spinner"></div></div>
+        <div id="content"></div>
+    </main>
+
+    <!-- ===== MODAL ===== -->
+    <div id="modal-container"></div>
+
+    <!-- ===== BOTÓN VOLVER ARRIBA ===== -->
+    <button class="back-to-top" id="backToTop" aria-label="Volver arriba">↑</button>
+
+    <!-- ===== EDITOR DE FONDO ===== -->
+    <button class="bg-editor-toggle" id="bgEditorToggle" aria-label="Editor de fondo">🎨</button>
+    <div class="bg-editor-controls hidden" id="bgEditorControls">
+        <label>Fondo editable</label>
+        <div class="color-row">
+            <input type="color" id="bgColorPicker" value="#05050f">
+            <span style="font-size:0.7rem;color:var(--text-secondary);">Color</span>
+        </div>
+        <div class="preset-colors">
+            <button class="preset-btn" style="background:#05050f;" data-color="#05050f"></button>
+            <button class="preset-btn" style="background:#0a0a1a;" data-color="#0a0a1a"></button>
+            <button class="preset-btn" style="background:#1a0a2a;" data-color="#1a0a2a"></button>
+            <button class="preset-btn" style="background:#0a1a2a;" data-color="#0a1a2a"></button>
+            <button class="preset-btn" style="background:#2a0a1a;" data-color="#2a0a1a"></button>
+            <button class="preset-btn" style="background:#1a1a2a;" data-color="#1a1a2a"></button>
+        </div>
+        <div style="display:flex;gap:0.5rem;align-items:center;flex-wrap:wrap;margin-top:0.3rem;">
+            <label style="font-size:0.7rem;">Gradiente:</label>
+            <input type="color" id="bgColorPicker2" value="#0a0a1a" style="width:28px;height:28px;">
+            <span style="font-size:0.7rem;color:var(--text-secondary);">→</span>
+            <input type="color" id="bgColorPicker3" value="#1a0a2a" style="width:28px;height:28px;">
+            <button class="quick-btn" style="padding:0.2rem 0.6rem;font-size:0.7rem;" id="applyGradientBtn">Aplicar</button>
+        </div>
+        <button class="quick-btn" style="padding:0.3rem 1rem;font-size:0.7rem;margin-top:0.3rem;" id="resetBgBtn">↺ Restaurar</button>
+    </div>
+
+    <script>
+        // ================================================================
+        // 1. SISTEMA DE NAVEGACIÓN SPA
+        // ================================================================
+        const content = document.getElementById('content');
+        const loadingSpinner = document.getElementById('loadingSpinner');
+        const navLinks = document.querySelectorAll('.nav-link');
+        const navToggle = document.getElementById('navToggle');
+        const navMenu = document.getElementById('navMenu');
+
+        let currentSection = 'inicio';
+        let isNavigating = false;
+
+        // ===== SECCIONES (HTML embebido) =====
+        const sections = {
+            inicio: `
+                <section id="seccion-inicio" class="hero-section">
+                    <div class="hero-bg" id="heroBg">
+                        <canvas id="starsCanvas"></canvas>
+                        <canvas id="particlesCanvas"></canvas>
+                        <div class="hero-overlay"></div>
+                    </div>
+                    <div class="hero-content">
+                        <p class="hero-eyebrow">PARA UNA PERSONA ESPECIAL</p>
+                        <h1 class="hero-title">Para ti...</h1>
+                        <p class="hero-subtitle">Mi persona favorita ♡</p>
+                        <p class="hero-text">
+                            Esta es una pequeña forma de decirte todo lo que siento,<br />
+                            lo que pienso y lo mucho que significas para mí.
+                        </p>
+                        <div class="quick-nav">
+                            <a class="quick-btn primary" onclick="navigateTo('fotos')">📸 Ver fotos</a>
+                            <a class="quick-btn" onclick="navigateTo('canciones')">🎵 Escuchar canciones</a>
+                            <a class="quick-btn" onclick="navigateTo('carta')">💌 Leer cartas</a>
+                        </div>
+                        <div class="inicio-counter">
+                            <div class="counter-item">
+                                <div class="counter-number" id="counterFotos">14</div>
+                                <div class="counter-label">Fotos</div>
+                            </div>
+                            <div class="counter-item">
+                                <div class="counter-number" id="counterCanciones">6</div>
+                                <div class="counter-label">Canciones</div>
+                            </div>
+                            <div class="counter-item">
+                                <div class="counter-number" id="counterCartas">8</div>
+                                <div class="counter-label">Cartas</div>
+                            </div>
+                            <div class="counter-item">
+                                <div class="counter-number" id="counterDias">∞</div>
+                                <div class="counter-label">Recuerdos</div>
+                            </div>
+                        </div>
+                        <div class="inicio-features">
+                            <div class="feature-card">
+                                <span class="feature-icon">📸</span>
+                                <h4>Momentos</h4>
+                                <p>Fotos y recuerdos que guardo con mucho cariño.</p>
+                            </div>
+                            <div class="feature-card">
+                                <span class="feature-icon">🎵</span>
+                                <h4>Melodías</h4>
+                                <p>La banda sonora que me hace pensar en ti.</p>
+                            </div>
+                            <div class="feature-card">
+                                <span class="feature-icon">💌</span>
+                                <h4>Palabras</h4>
+                                <p>Cartas escritas desde el corazón para ti.</p>
+                            </div>
+                            <div class="feature-card">
+                                <span class="feature-icon">✨</span>
+                                <h4>Magia</h4>
+                                <p>Lo que siento cuando estoy contigo.</p>
+                            </div>
+                            <div class="feature-card">
+                                <span class="feature-icon">🌟</span>
+                                <h4>Inspiración</h4>
+                                <p>Eres mi fuente de inspiración diaria.</p>
+                            </div>
+                            <div class="feature-card">
+                                <span class="feature-icon">🌹</span>
+                                <h4>Amore</h4>
+                                <p>Un amor que crece con cada día que pasa.</p>
+                            </div>
+                        </div>
+                        <div class="inicio-quote">
+                            "Eres la luz que ilumina mis días y la razón por la que mi corazón late más fuerte."
+                        </div>
+                        <div class="inicio-frases">
+                            <div class="frase-item">
+                                <p class="frase-texto">"Cada día a tu lado es un regalo que el universo me ha dado."</p>
+                                <p class="frase-autor">— Mi corazón</p>
+                            </div>
+                            <div class="frase-item">
+                                <p class="frase-texto">"Tu sonrisa es el sol que calienta mis mañanas."</p>
+                                <p class="frase-autor">— Mis pensamientos</p>
+                            </div>
+                            <div class="frase-item">
+                                <p class="frase-texto">"En cada latido, tu nombre resuena."</p>
+                                <p class="frase-autor">— Mi alma</p>
+                            </div>
+                            <div class="frase-item">
+                                <p class="frase-texto">"Eres la razón por la que creo en el amor verdadero."</p>
+                                <p class="frase-autor">— Mi ser</p>
+                            </div>
+                        </div>
+                        <div class="inicio-stats">
+                            <div class="stat-item">
+                                <div class="stat-number">365</div>
+                                <div class="stat-label">Días de sonrisas</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">∞</div>
+                                <div class="stat-label">Razones para amarte</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">1000</div>
+                                <div class="stat-label">Recuerdos compartidos</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-number">♡</div>
+                                <div class="stat-label">Corazones llenos</div>
+                            </div>
+                        </div>
+                        <div class="inicio-testimonios">
+                            <div class="testimonio-card">
+                                <p class="testimonio-texto">"Cuando te conocí, supe que mi vida cambiaría para siempre. Y así fue."</p>
+                                <p class="testimonio-autor">— El primer día</p>
+                            </div>
+                            <div class="testimonio-card">
+                                <p class="testimonio-texto">"Cada momento contigo es una historia que quiero recordar siempre."</p>
+                                <p class="testimonio-autor">— Cada instante</p>
+                            </div>
+                            <div class="testimonio-card">
+                                <p class="testimonio-texto">"Eres la persona más increíble que he conocido. Gracias por ser tú."</p>
+                                <p class="testimonio-autor">— Siempre</p>
+                            </div>
+                        </div>
+                        <div class="inicio-timeline">
+                            <div class="timeline-item">
+                                <div class="timeline-fecha">El día que todo comenzó</div>
+                                <p class="timeline-texto">Ese día especial donde nuestras miradas se cruzaron y el mundo se detuvo.</p>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-fecha">El primer paseo</div>
+                                <p class="timeline-texto">Caminando sin rumbo, pero con la certeza de que estábamos donde debíamos estar.</p>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-fecha">La primera sonrisa compartida</div>
+                                <p class="timeline-texto">Esa sonrisa que iluminó mi día y que guardo en mi corazón para siempre.</p>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-fecha">El primer "te quiero"</div>
+                                <p class="timeline-texto">Tres palabras que cambiaron todo y que repito cada día con más fuerza.</p>
+                            </div>
+                        </div>
+                        <div class="scroll-indicator">
+                            <span class="scroll-line"></span>
+                        </div>
+                    </div>
+                </section>
+            `,
+
+            fotos: `
+                <section id="seccion-fotos" class="section-padding">
+                    <div class="section-header">
+                        <h2>Galería de fotos</h2>
+                        <p>Algunos momentos que quiero guardar para siempre.</p>
+                    </div>
+                    <div class="fotos-destacados">
+                        <div class="destacado-item" onclick="openModalFoto('foto10.jpeg', 'Tardes que dejan huella', '12 abril 2026')">
+                            <img src="foto10.jpeg" alt="Tardes que dejan huella" loading="lazy">
+                            <div class="destacado-overlay"><span>✨ Tardes que dejan huella</span></div>
+                        </div>
+                        <div class="destacado-item" onclick="openModalFoto('foto02.jpeg', 'Una mirada dulce', '19 marzo 2017')">
+                            <img src="foto02.jpeg" alt="Una mirada dulce" loading="lazy">
+                            <div class="destacado-overlay"><span>👀 Una mirada dulce</span></div>
+                        </div>
+                        <div class="destacado-item" onclick="openModalFoto('foto03.jpeg', 'Aventura en moto', '14 julio 2026')">
+                            <img src="foto03.jpeg" alt="Aventura en moto" loading="lazy">
+                            <div class="destacado-overlay"><span>🏍️ Aventura en moto</span></div>
+                        </div>
+                        <div class="destacado-item" onclick="openModalFoto('foto06.jpeg', 'Tú siendo tú', '29 febrero 2020')">
+                            <img src="foto06.jpeg" alt="Tú siendo tú" loading="lazy">
+                            <div class="destacado-overlay"><span>💫 Tú siendo tú</span></div>
+                        </div>
+                    </div>
+                    <div class="fotos-filters" role="tablist">
+                        <button class="filter-btn active" data-filter="todos" role="tab" aria-selected="true">Todos</button>
+                        <button class="filter-btn" data-filter="momentos" role="tab" aria-selected="false">Momentos</button>
+                        <button class="filter-btn" data-filter="viajes" role="tab" aria-selected="false">Viajes</button>
+                        <button class="filter-btn" data-filter="tu" role="tab" aria-selected="false">Tú</button>
+                    </div>
+                    <div class="fotos-grid" id="fotosGrid">
+                        <figure class="foto-item" data-categoria="momentos" data-titulo="Tardes que dejan huella" data-fecha="12 abril 2026">
+                            <img src="foto10.jpeg" alt="Tardes que dejan huella" loading="lazy">
+                            <figcaption><h4>Un momento que transforma</h4><span>12 abril 2026</span></figcaption>
+                        </figure>
+                        <figure class="foto-item" data-categoria="tu" data-titulo="Una sonrisa que ilumina" data-fecha="19 marzo 2017">
+                            <img src="foto02.jpeg" alt="Una mirada dulce detrás de sus gafas" loading="lazy">
+                            <figcaption><h4>Una mirada dulce detrás de sus gafas</h4><span>19 marzo 2017</span></figcaption>
+                        </figure>
+                        <figure class="foto-item" data-categoria="viajes" data-titulo="Momento en la moto" data-fecha="14 julio 2026">
+                            <img src="foto03.jpeg" alt="Momento en moto" loading="lazy">
+                            <figcaption><h4>Aventura en la moto</h4><span>14 julio 2026</span></figcaption>
+                        </figure>
+                        <figure class="foto-item" data-categoria="tu" data-titulo="Tú siendo tú" data-fecha="29 febrero 2020">
+                            <img src="foto06.jpeg" alt="Tú siendo tú" loading="lazy">
+                            <figcaption><h4>Tú siendo tú</h4><span>29 febrero 2020</span></figcaption>
+                        </figure>
+                        <figure class="foto-item" data-categoria="momentos" data-titulo="Sonrisa que enamora" data-fecha="18 mayo 2026">
+                            <img src="foto01.jpeg" alt="Sonrisa que enamora" loading="lazy">
+                            <figcaption><h4>Sonrisa que enamora</h4><span>18 mayo 2026</span></figcaption>
+                        </figure>
+                        <figure class="foto-item" data-categoria="tu" data-titulo="Tú de bebe" data-fecha="07 junio 2005">
+                            <img src="foto04.jpeg" alt="Tú de bebe" loading="lazy">
+                            <figcaption><h4>Tú de bebe</h4><span>07 junio 2005</span></figcaption>
+                        </figure>
+                        <figure class="foto-item" data-categoria="tu" data-titulo="Mirada seductora" data-fecha="03 agosto 2017">
+                            <img src="foto07.jpeg" alt="Mirada seductora" loading="lazy">
+                            <figcaption><h4>Mirada seductora</h4><span>03 agosto 2017</span></figcaption>
+                        </figure>
+                        <figure class="foto-item" data-categoria="momentos" data-titulo="Salida de café" data-fecha="18 mayo 2026">
+                            <img src="foto05.jpeg" alt="Salida de café" loading="lazy">
+                            <figcaption><h4>Salida de café</h4><span>18 mayo 2026</span></figcaption>
+                        </figure>
+                        <figure class="foto-item" data-categoria="tu" data-titulo="Foto de hermanas" data-fecha="4 abril 2020">
+                            <img src="foto08.jpeg" alt="Foto de hermanas" loading="lazy">
+                            <figcaption><h4>Foto de hermanas</h4><span>4 abril 2020</span></figcaption>
+                        </figure>
+                        <figure class="foto-item" data-categoria="tu" data-titulo="Carita de angel" data-fecha="18 mayo 2026">
+                            <img src="foto09.jpeg" alt="Carita de angel" loading="lazy">
+                            <figcaption><h4>Carita de angel</h4><span>18 mayo 2026</span></figcaption>
+                        </figure>
+                        <figure class="foto-item" data-categoria="momentos" data-titulo="Cuando aprendistes a ponerte a ti primero" data-fecha="30 abril 2026">
+                            <img src="foto11.jpeg" alt="Cuando aprendistes a ponerte a ti primero" loading="lazy">
+                            <figcaption><h4>Cuando aprendistes a ponerte a ti primero</h4><span>30 abril 2026</span></figcaption>
+                        </figure>
+                        <figure class="foto-item" data-categoria="viajes" data-titulo="Momento en la moto" data-fecha="14 julio 2026">
+                            <img src="foto12.jpeg" alt="Momento en moto" loading="lazy">
+                            <figcaption><h4>Aventura en la moto</h4><span>14 julio 2026</span></figcaption>
+                        </figure>
+                        <figure class="foto-item" data-categoria="viajes" data-titulo="Momento en la playa" data-fecha="20 diciembre 2019">
+                            <img src="foto13.jpeg" alt="Momento en la playa" loading="lazy">
+                            <figcaption><h4>Momento en la playa</h4><span>20 diciembre 2019</span></figcaption>
+                        </figure>
+                        <figure class="foto-item" data-categoria="tu" data-titulo="Una mirada que transmite ternura" data-fecha="11 marzo 2020">
+                            <img src="foto14.jpeg" alt="Una mirada que transmite ternura" loading="lazy">
+                            <figcaption><h4>Una mirada que transmite ternura</h4><span>11 marzo 2020</span></figcaption>
+                        </figure>
+                    </div>
+                </section>
+            `,
+
+            canciones: `
+                <section id="seccion-canciones" class="section-padding" style="background:var(--background);transition:background 0.5s ease;">
+                    <div class="section-header">
+                        <h2>La banda sonora de nuestra historia</h2>
+                        <p>Estas canciones me hacen pensar en ti.</p>
+                    </div>
+                    <div class="canciones-destacadas">
+                        <div class="cancion-destacada" onclick="reproducirCancion(0)">
+                            <span class="cancion-icon">❤️</span>
+                            <h4>Princesa de mi corazón</h4>
+                            <p>El corazón</p>
+                        </div>
+                        <div class="cancion-destacada" onclick="reproducirCancion(1)">
+                            <span class="cancion-icon">✨</span>
+                            <h4>No Dejes Que Apaguen Tu Brillo</h4>
+                            <p>El corazón</p>
+                        </div>
+                        <div class="cancion-destacada" onclick="reproducirCancion(2)">
+                            <span class="cancion-icon">📖</span>
+                            <h4>PÁGINAS DE LUZ</h4>
+                            <p>El corazón</p>
+                        </div>
+                        <div class="cancion-destacada" onclick="reproducirCancion(3)">
+                            <span class="cancion-icon">⏳</span>
+                            <h4>ESPÉRAME HASTA QUE LLEGUE</h4>
+                            <p>El corazón</p>
+                        </div>
+                        <div class="cancion-destacada" onclick="reproducirCancion(4)">
+                            <span class="cancion-icon">💫</span>
+                            <h4>CUANDO TÚ QUIERAS</h4>
+                            <p>El corazón</p>
+                        </div>
+                        <div class="cancion-destacada" onclick="reproducirCancion(5)">
+                            <span class="cancion-icon">🌅</span>
+                            <h4>Cuando llegue a ti</h4>
+                            <p>El corazón</p>
+                        </div>
+                        <div class="cancion-destacada" onclick="reproducirCancion(6)">
+                            <span class="cancion-icon">✨</span>
+                            <h4>Si Me Dejas Conocerte</h4>
+                            <p>El corazón</p>
+                        </div>
+                        <div class="cancion-destacada" onclick="reproducirCancion(7)">
+                            <span class="cancion-icon">🌅</span>
+                            <h4>La Chica de la Mirada Encantadora</h4>
+                            <p>El corazón</p>
+                        </div>
+                        <div class="cancion-destacada" onclick="reproducirCancion(8)">
+                            <span class="cancion-icon">💫</span>
+                            <h4>La Chica de la Mirada</h4>
+                            <p>El corazón</p>
+                        </div>
+                        <div class="cancion-destacada" onclick="reproducirCancion(9)">
+                            <span class="cancion-icon">📖</span>
+                            <h4>Donde Empieza Tu Luz</h4>
+                            <p>El corazón</p>
+                        </div>
+                        <div class="cancion-destacada" onclick="reproducirCancion(10)">
+                            <span class="cancion-icon">❤️</span>
+                            <h4>Cuando Te Miro</h4>
+                            <p>El corazón</p>
+                        </div>
+                        <div class="cancion-destacada" onclick="reproducirCancion(11)">
+                            <span class="cancion-icon">❤️</span>
+                            <h4>Me Gustas Más Cada Día</h4>
+                            <p>El corazón</p>
+                        </div>
+                    </div>
+                    <div class="player-container">
+                        <div class="player-card glass">
+                            <div class="player-artwork" id="playerArtwork">
+                                <img src="fondo de canciones.png" alt="Portada del álbum" id="artworkImg">
+                            </div>
+                            <div class="player-info">
+                                <h3 id="playerTitle">Princesa de mi corazón ❤️</h3>
+                                <p id="playerArtist">El corazón</p>
+                            </div>
+                            <div class="player-controls">
+                                <button class="player-btn" id="prevBtn" aria-label="Canción anterior">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="19 20 9 12 19 4 19 20"/><line x1="5" y1="19" x2="5" y2="5"/></svg>
+                                </button>
+                                <button class="player-btn play-main" id="playBtn" aria-label="Reproducir">
+                                    <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                                </button>
+                                <button class="player-btn" id="nextBtn" aria-label="Siguiente canción">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 4 15 12 5 20 5 4"/><line x1="19" y1="5" x2="19" y2="19"/></svg>
+                                </button>
+                            </div>
+                            <div class="player-progress">
+                                <span id="currentTime">0:00</span>
+                                <div class="progress-bar" id="progressBar"><div class="progress-fill" id="progressFill"></div></div>
+                                <span id="totalTime">0:00</span>
+                            </div>
+                            <div class="player-volume">
+                                <button class="player-btn" id="volumeBtn" aria-label="Silenciar">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+                                </button>
+                                <input type="range" class="volume-slider" id="volumeSlider" min="0" max="1" step="0.01" value="0.8">
+                                <button class="player-btn" id="favoriteBtn" aria-label="Favorito">♡</button>
+                            </div>
+                        </div>
+                        <ul class="playlist" id="playlist">
+                            <li class="playlist-item active" data-file="Princesa de mi corazón ❤️.mp3" data-portada="Princesa de mi corazón.png" data-titulo="Princesa de mi corazón ❤️" data-artista="El corazón" data-duracion="6:54">
+                                <span class="play-btn">▶</span><span class="song-title">Princesa de mi corazón ❤️</span><span class="song-artist">El corazón</span><span class="song-duration">6:54</span>
+                            </li>
+                            <li class="playlist-item" data-file="No Dejes Que Apaguen Tu Brillo.mp3" data-portada="No Dejes Que Apaguen Tu Brillo.png" data-titulo="No Dejes Que Apaguen Tu Brillo" data-artista="El corazón" data-duracion="5:04">
+                                <span class="play-btn">▶</span><span class="song-title">No Dejes Que Apaguen Tu Brillo</span><span class="song-artist">El corazón</span><span class="song-duration">5:04</span>
+                            </li>
+                            <li class="playlist-item" data-file="PÁGINAS DE LUZ.mp3" data-portada="PÁGINAS DE LUZ.png" data-titulo="PÁGINAS DE LUZ" data-artista="El corazón" data-duracion="5:58">
+                                <span class="play-btn">▶</span><span class="song-title">PÁGINAS DE LUZ</span><span class="song-artist">El corazón</span><span class="song-duration">5:58</span>
+                            </li>
+                            <li class="playlist-item" data-file="ESPÉRAME HASTA QUE LLEGUE.mp3" data-portada="ESPÉRAME HASTA QUE LLEGUE.png" data-titulo="ESPÉRAME HASTA QUE LLEGUE" data-artista="El corazón" data-duracion="4:09">
+                                <span class="play-btn">▶</span><span class="song-title">ESPÉRAME HASTA QUE LLEGUE</span><span class="song-artist">El corazón</span><span class="song-duration">4:09</span>
+                            </li>
+                            <li class="playlist-item" data-file="CUANDO TÚ QUIERAS.mp3" data-portada="CUANDO TÚ QUIERAS.png" data-titulo="CUANDO TÚ QUIERAS" data-artista="El corazón" data-duracion="5:07">
+                                <span class="play-btn">▶</span><span class="song-title">CUANDO TÚ QUIERAS</span><span class="song-artist">El corazón</span><span class="song-duration">5:07</span>
+                            </li>
+                            <li class="playlist-item" data-file="Cuando llegue a ti.mp3" data-portada="Cuando llegue a ti.png" data-titulo="Cuando llegue a ti" data-artista="El corazón" data-duracion="6:11">
+                                <span class="play-btn">▶</span><span class="song-title">Cuando llegue a ti</span><span class="song-artist">El corazón</span><span class="song-duration">6:11</span>
+                            </li>
+                            <li class="playlist-item" data-file="Si Me Dejas Conocerte.mp3" data-portada="Si Me Dejas Conocerte.png" data-titulo="Si Me Dejas Conocerte" data-artista="El corazón" data-duracion="4:28">
+                                <span class="play-btn">▶</span><span class="song-title">Si Me Dejas Conocerte</span><span class="song-artist">El corazón</span><span class="song-duration">4:28</span>
+                            </li>
+                            <li class="playlist-item" data-file="La Chica de la Mirada Encantadora.mp3" data-portada="La Chica de la Mirada Encantadora.png" data-titulo="La Chica de la Mirada Encantadora" data-artista="El corazón" data-duracion="4:57">
+                                <span class="play-btn">▶</span><span class="song-title">La Chica de la Mirada Encantadora</span><span class="song-artist">El corazón</span><span class="song-duration">4:57</span>
+                            </li>
+                            <li class="playlist-item" data-file="La Chica de la Mirada.mp3" data-portada="La Chica de la Mirada.png" data-titulo="La Chica de la Mirada" data-artista="El corazón" data-duracion="3:27">
+                                <span class="play-btn">▶</span><span class="song-title">La Chica de la Mirada</span><span class="song-artist">El corazón</span><span class="song-duration">3:27</span>
+                            </li>
+                            <li class="playlist-item" data-file="Donde Empieza Tu Luz.mp3" data-portada="Donde Empieza Tu Luz.png" data-titulo="Donde Empieza Tu Luz" data-artista="El corazón" data-duracion="3:34">
+                                <span class="play-btn">▶</span><span class="song-title">Donde Empieza Tu Luz</span><span class="song-artist">El corazón</span><span class="song-duration">3:34</span>
+                            </li>
+                            <li class="playlist-item" data-file="Cuando Te Miro.mp3" data-portada="Cuando Te Miro.png" data-titulo="Cuando Te Miro" data-artista="El corazón" data-duracion="4:29">
+                                <span class="play-btn">▶</span><span class="song-title">Cuando Te Miro</span><span class="song-artist">El corazón</span><span class="song-duration">4:29</span>
+                            </li>
+                            <li class="playlist-item" data-file="Me Gustas Más Cada Día.mp3" data-portada="Me Gustas Más Cada Día.png" data-titulo="Me Gustas Más Cada Día" data-artista="El corazón" data-duracion="5:01">
+                                <span class="play-btn">▶</span><span class="song-title">Me Gustas Más Cada Día</span><span class="song-artist">El corazón</span><span class="song-duration">5:01</span>
+                            </li>
+                        </ul>
+                    </div>
+                </section>
+            `,
+
+            carta: `
+                <section id="seccion-carta" class="section-padding" style="background:var(--background);transition:background 0.5s ease;">
+                    <div class="section-header">
+                        <h2>Cartas para ti</h2>
+                        <p>Palabras escritas desde el corazón para la persona más especial.</p>
+                    </div>
+                    <div class="carta-container" id="cartaContainer">
+                        <!-- Carta 1 -->
+                        <div class="carta-card" data-carta="1">
+                            <span class="carta-badge">❤️</span>
+                            <span class="carta-flores">🌸</span>
+                            <span class="carta-icon">💌</span>
+                            <h3 class="carta-titulo">La primera vez que te vi</h3>
+                            <p class="carta-descripcion">Un recuerdo que nunca se borra, el día que todo cambió.</p>
+                            <span class="carta-corazon">♡</span>
+                        </div>
+                        <!-- Carta 2 -->
+                        <div class="carta-card" data-carta="2">
+                            <span class="carta-badge">⭐</span>
+                            <span class="carta-flores">🌺</span>
+                            <span class="carta-icon">🌙</span>
+                            <h3 class="carta-titulo">Bajo la misma luna</h3>
+                            <p class="carta-descripcion">Aunque la distancia nos separe, siempre miramos el mismo cielo.</p>
+                            <span class="carta-corazon">♡</span>
+                        </div>
+                        <!-- Carta 3 -->
+                        <div class="carta-card" data-carta="3">
+                            <span class="carta-badge">✨</span>
+                            <span class="carta-flores">🌻</span>
+                            <span class="carta-icon">☀️</span>
+                            <h3 class="carta-titulo">Eres mi sol</h3>
+                            <p class="carta-descripcion">En los días más oscuros, tu luz siempre me guía.</p>
+                            <span class="carta-corazon">♡</span>
+                        </div>
+                        <!-- Carta 4 -->
+                        <div class="carta-card" data-carta="4">
+                            <span class="carta-badge">💫</span>
+                            <span class="carta-flores">🌹</span>
+                            <span class="carta-icon">🌟</span>
+                            <h3 class="carta-titulo">Gracias por existir</h3>
+                            <p class="carta-descripcion">No hay palabras suficientes para agradecerte todo lo que eres.</p>
+                            <span class="carta-corazon">♡</span>
+                        </div>
+                        <!-- Carta 5 -->
+                        <div class="carta-card" data-carta="5">
+                            <span class="carta-badge">🌈</span>
+                            <span class="carta-flores">🌷</span>
+                            <span class="carta-icon">🎵</span>
+                            <h3 class="carta-titulo">La canción de mi corazón</h3>
+                            <p class="carta-descripcion">Cada nota musical me recuerda a ti y a tu hermosa esencia.</p>
+                            <span class="carta-corazon">♡</span>
+                        </div>
+                        <!-- Carta 6 -->
+                        <div class="carta-card" data-carta="6">
+                            <span class="carta-badge">💎</span>
+                            <span class="carta-flores">🌼</span>
+                            <span class="carta-icon">🌊</span>
+                            <h3 class="carta-titulo">Como el mar</h3>
+                            <p class="carta-descripcion">Mi amor por ti es profundo e infinito, como el océano.</p>
+                            <span class="carta-corazon">♡</span>
+                        </div>
+                        <!-- Carta 7 -->
+                        <div class="carta-card" data-carta="7">
+                            <span class="carta-badge">🦋</span>
+                            <span class="carta-flores">🌸</span>
+                            <span class="carta-icon">🌅</span>
+                            <h3 class="carta-titulo">Amanecer contigo</h3>
+                            <p class="carta-descripcion">Cada nuevo día es una oportunidad para amarte más.</p>
+                            <span class="carta-corazon">♡</span>
+                        </div>
+                        <!-- Carta 8 -->
+                        <div class="carta-card" data-carta="8">
+                            <span class="carta-badge">🌟</span>
+                            <span class="carta-flores">🌺</span>
+                            <span class="carta-icon">💫</span>
+                            <h3 class="carta-titulo">Eres mi estrella</h3>
+                            <p class="carta-descripcion">En el cielo oscuro de la vida, tú eres la estrella que me guía.</p>
+                            <span class="carta-corazon">♡</span>
+                        </div>
+                    </div>
+                </section>
+            `
+        };
+
+        // ===== DATOS DE LAS CARTAS (8 cartas) =====
+        const cartasData = {
+            1: {
+                titulo: "La primera vez que te vi",
+                contenido: `
+                    <p>Ese día todo cambió sin que me diera cuenta.</p>
+                    <p>No sabía que una simple mirada podía guardar tanta luz.</p>
+                    <p>El tiempo se detuvo por un instante, y en ese instante supe que algo especial estaba ocurriendo.</p>
+                    <p>No fue casualidad, fue el destino escribiendo nuestra historia.</p>
+                    <p>Desde entonces, cada día a tu lado es un regalo que atesoro con todo mi corazón.</p>
+                    <p>Tu sonrisa se quedó grabada en mi mente, como una imagen que nunca se borra.</p>
+                    <p>En ese momento, sin saberlo, comenzó la historia más bonita de mi vida.</p>
+                    <p>Gracias por llegar a mi vida y por quedarte.</p>
+                    <p class="carta-firma">Con todo mi amor, siempre tuyo. ❤️</p>
+                    <p class="carta-fecha">— 12 de abril de 2026</p>
+                `
+            },
+            2: {
+                titulo: "Bajo la misma luna",
+                contenido: `
+                    <p>Cuando miro al cielo y veo la luna, sé que tú también la ves.</p>
+                    <p>Aunque los kilómetros nos separen, el mismo manto estrellado nos cobija.</p>
+                    <p>Cada noche me recuerda que, pase lo que pase, siempre estamos conectados.</p>
+                    <p>La distancia es solo un número, el corazón no entiende de metros ni de kilómetros.</p>
+                    <p>Y aunque no pueda abrazarte ahora, cada latido es un mensaje que viaja hasta ti.</p>
+                    <p>La luna es testigo de mis pensamientos, de cada suspiro que llevo tu nombre.</p>
+                    <p>Cuando la noche se vuelve larga, cierro los ojos y te siento cerca.</p>
+                    <p>Siempre estaré aquí, esperando el día en que podamos mirar juntos la luna.</p>
+                    <p class="carta-firma">Bajo la misma luna, siempre yo. 🌙</p>
+                    <p class="carta-fecha">— 25 de mayo de 2026</p>
+                `
+            },
+            3: {
+                titulo: "Eres mi sol",
+                contenido: `
+                    <p>En los días grises, en los momentos difíciles, siempre hay una luz.</p>
+                    <p>Esa luz eres tú. Tu sonrisa, tu forma de ser, tu manera de ver la vida.</p>
+                    <p>No sabes cuánto me inspiras a ser mejor, a levantarme cuando caigo.</p>
+                    <p>Contigo a mi lado, incluso el día más oscuro se vuelve brillante.</p>
+                    <p>Eres mi sol, mi razón para sonreír, mi lugar seguro.</p>
+                    <p>Tu calor ilumina mis pasos, tu luz disipa mis dudas.</p>
+                    <p>En cada amanecer, tu recuerdo me da fuerzas para empezar el día.</p>
+                    <p>No importa lo que pase, mientras tengas tu luz, yo tendré un camino.</p>
+                    <p class="carta-firma">Siempre brillando por ti. ☀️</p>
+                    <p class="carta-fecha">— 14 de junio de 2026</p>
+                `
+            },
+            4: {
+                titulo: "Gracias por existir",
+                contenido: `
+                    <p>Hay personas que pasan por nuestra vida sin dejar huella.</p>
+                    <p>Y luego estás tú, que dejaste una marca imborrable en mi corazón.</p>
+                    <p>Gracias por tu paciencia, por tu alegría, por tu forma única de ver el mundo.</p>
+                    <p>Gracias por cada risa compartida, por cada silencio cómplice.</p>
+                    <p>Gracias por ser tú, simplemente tú, sin filtros ni máscaras.</p>
+                    <p>Tu presencia en mi vida es el mejor regalo que he recibido.</p>
+                    <p>No hay palabras suficientes para describir lo que significas para mí.</p>
+                    <p>Eres una de las mejores cosas que me han pasado, y nunca dejaré de agradecerlo.</p>
+                    <p class="carta-firma">Gracias por existir, siempre tuyo. 🌟</p>
+                    <p class="carta-fecha">— 2 de julio de 2026</p>
+                `
+            },
+            5: {
+                titulo: "La canción de mi corazón",
+                contenido: `
+                    <p>Cada nota musical me transporta a los momentos compartidos contigo.</p>
+                    <p>Tu risa es la melodía más hermosa que he escuchado.</p>
+                    <p>Cuando escucho una canción romántica, siempre pienso en ti.</p>
+                    <p>La música tiene el poder de expresar lo que las palabras no pueden decir.</p>
+                    <p>Y en mi corazón, tú eres la canción que nunca termina.</p>
+                    <p>Cada acorde me recuerda tu esencia, cada letra habla de nosotros.</p>
+                    <p>La banda sonora de mi vida tiene tu nombre escrito en cada compás.</p>
+                    <p>Eres la canción que siempre quiero escuchar, una y otra vez.</p>
+                    <p class="carta-firma">Siempre cantando por ti. 🎵</p>
+                    <p class="carta-fecha">— 18 de julio de 2026</p>
+                `
+            },
+            6: {
+                titulo: "Como el mar",
+                contenido: `
+                    <p>El mar es profundo, misterioso, eterno e infinito.</p>
+                    <p>Así es mi amor por ti, sin límites, sin fronteras.</p>
+                    <p>Cada ola que llega a la orilla lleva un mensaje de amor.</p>
+                    <p>Como el mar, mi corazón se expande cada vez que pienso en ti.</p>
+                    <p>En la inmensidad del océano encuentro la grandeza de lo que siento.</p>
+                    <p>Las mareas suben y bajan, pero mi amor por ti es constante.</p>
+                    <p>Eres el faro que ilumina mi camino en medio de la tormenta.</p>
+                    <p>Y en la calma del mar, encuentro la paz de tenerte en mi vida.</p>
+                    <p class="carta-firma">Tan profundo como el mar. 🌊</p>
+                    <p class="carta-fecha">— 30 de julio de 2026</p>
+                `
+            },
+            7: {
+                titulo: "Amanecer contigo",
+                contenido: `
+                    <p>Cada amanecer es un nuevo comienzo, una nueva oportunidad.</p>
+                    <p>Y cada amanecer contigo es un regalo que valoro profundamente.</p>
+                    <p>Ver el sol salir mientras pienso en ti es mi momento favorito del día.</p>
+                    <p>La luz del alba me recuerda que cada día puedo amarte más.</p>
+                    <p>Los colores del amanecer son tan hermosos como tu sonrisa.</p>
+                    <p>En cada rayo de sol, veo reflejada tu luz interior.</p>
+                    <p>Despertar y saber que existes da sentido a mis días.</p>
+                    <p>Y cada mañana, agradezco tenerte en mi vida.</p>
+                    <p class="carta-firma">Siempre amaneciendo para ti. 🌅</p>
+                    <p class="carta-fecha">— 15 de agosto de 2026</p>
+                `
+            },
+            8: {
+                titulo: "Eres mi estrella",
+                contenido: `
+                    <p>En el cielo oscuro de la vida, tú eres la estrella que me guía.</p>
+                    <p>Tu luz ilumina mis pasos, tu brillo me da esperanza.</p>
+                    <p>Cuando todo parece perdido, miro al cielo y te veo brillar.</p>
+                    <p>Las estrellas son testigos de mis pensamientos hacia ti.</p>
+                    <p>Eres la más brillante de todas, la que nunca se apaga.</p>
+                    <p>En la inmensidad del universo, eres mi punto de referencia.</p>
+                    <p>Tu luz es mi guía, tu brillo es mi fuerza.</p>
+                    <p>Y mientras tú brilles, yo siempre encontraré el camino de vuelta a ti.</p>
+                    <p class="carta-firma">Siempre brillando para ti. 💫</p>
+                    <p class="carta-fecha">— 28 de agosto de 2026</p>
+                `
+            }
+        };
+
+        // ===== FUNCIÓN DE NAVEGACIÓN =====
+        function navigateTo(section) {
+            if (isNavigating || section === currentSection) return;
+            isNavigating = true;
+            loadingSpinner.classList.add('active');
+
+            if (window._playerAudio) {
+                window._playerAudio.pause();
+            }
+
+            setTimeout(() => {
+                const html = sections[section];
+                if (html) {
+                    content.innerHTML = html;
+                    currentSection = section;
+                    updateActiveNav(section);
+                    history.pushState({ section }, '', '#' + section);
+
+                    initSection(section);
+
+                    if (section === 'inicio') {
+                        setTimeout(() => { initStars(); initParticles(); }, 100);
+                    } else {
+                        if (window._starsInterval) cancelAnimationFrame(window._starsInterval);
+                        if (window._particlesInterval) cancelAnimationFrame(window._particlesInterval);
+                    }
+                } else {
+                    content.innerHTML = `<div class="section-padding" style="text-align:center;padding-top:4rem;">
+                        <h2>❌ Sección no encontrada</h2>
+                        <button class="btn-primary" style="margin-top:2rem;" onclick="navigateTo('inicio')">Volver al inicio</button>
+                    </div>`;
+                }
+
+                loadingSpinner.classList.remove('active');
+                isNavigating = false;
+                checkBackToTop();
+            }, 300);
+        }
+
+        function updateActiveNav(section) {
+            navLinks.forEach(link => {
+                link.classList.toggle('active', link.dataset.section === section);
+            });
+        }
+
+        function initSection(section) {
+            switch(section) {
+                case 'inicio': initInicio(); break;
+                case 'fotos': initFotos(); break;
+                case 'canciones': initCanciones(); break;
+                case 'carta': initCarta(); break;
+            }
+        }
+
+        window.addEventListener('popstate', (e) => {
+            const section = e.state?.section || getSectionFromHash();
+            if (section && section !== currentSection) {
+                navigateTo(section);
+            }
+        });
+
+        function getSectionFromHash() {
+            const hash = window.location.hash.replace('#', '');
+            return Object.keys(sections).includes(hash) ? hash : 'inicio';
+        }
+
+        // ===== TEMA OSCURO/CLARO =====
+        const themeToggle = document.getElementById('themeToggle');
+        const htmlEl = document.documentElement;
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        htmlEl.setAttribute('data-theme', savedTheme);
+        themeToggle.textContent = savedTheme === 'dark' ? '🌙' : '☀️';
+
+        themeToggle.addEventListener('click', () => {
+            const current = htmlEl.getAttribute('data-theme');
+            const next = current === 'dark' ? 'light' : 'dark';
+            htmlEl.setAttribute('data-theme', next);
+            localStorage.setItem('theme', next);
+            themeToggle.textContent = next === 'dark' ? '🌙' : '☀️';
+        });
+
+        // ===== MENÚ MÓVIL =====
+        navToggle.addEventListener('click', () => {
+            const active = navMenu.classList.toggle('active');
+            navToggle.classList.toggle('active');
+            navToggle.setAttribute('aria-expanded', active);
+        });
+
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                navMenu.classList.remove('active');
+                navToggle.classList.remove('active');
+                navToggle.setAttribute('aria-expanded', 'false');
+            });
+        });
+
+        // ===== BOTÓN VOLVER ARRIBA =====
+        const backToTop = document.getElementById('backToTop');
+
+        function checkBackToTop() {
+            const scrollY = window.scrollY || window.pageYOffset;
+            backToTop.classList.toggle('visible', scrollY > 400);
+        }
+
+        window.addEventListener('scroll', checkBackToTop, { passive: true });
+
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // ================================================================
+        // 2. SISTEMA DE ESTRELLAS
+        // ================================================================
+        let starsCanvas, starsCtx, stars = [], starsAnimationId = null;
+
+        function initStars() {
+            const canvas = document.getElementById('starsCanvas');
+            if (!canvas) return;
+            if (starsAnimationId) cancelAnimationFrame(starsAnimationId);
+
+            starsCanvas = canvas;
+            starsCtx = canvas.getContext('2d');
+            resizeStarsCanvas();
+            generateStars();
+            window.addEventListener('resize', () => { resizeStarsCanvas(); generateStars(); });
+            animateStars();
+        }
+
+        function resizeStarsCanvas() {
+            if (!starsCanvas) return;
+            const rect = starsCanvas.parentElement?.getBoundingClientRect() || { width: window.innerWidth, height: window.innerHeight };
+            starsCanvas.width = rect.width || window.innerWidth;
+            starsCanvas.height = rect.height || window.innerHeight;
+        }
+
+        function generateStars() {
+            if (!starsCanvas) return;
+            const count = Math.min(150, Math.floor((starsCanvas.width * starsCanvas.height) / 12000));
+            stars = [];
+            for (let i = 0; i < count; i++) {
+                stars.push({
+                    x: Math.random() * starsCanvas.width,
+                    y: Math.random() * starsCanvas.height,
+                    radius: Math.random() * 1.5 + 0.5,
+                    speed: Math.random() * 0.3 + 0.1,
+                    opacity: Math.random() * 0.6 + 0.4,
+                    phase: Math.random() * Math.PI * 2
+                });
+            }
+        }
+
+        function animateStars() {
+            if (!starsCanvas || !starsCtx) return;
+            starsCtx.clearRect(0, 0, starsCanvas.width, starsCanvas.height);
+            const time = Date.now() / 1000;
+            stars.forEach(star => {
+                const twinkle = Math.sin(time * star.speed + star.phase) * 0.3 + 0.7;
+                const opacity = star.opacity * twinkle;
+                starsCtx.beginPath();
+                starsCtx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+                starsCtx.fillStyle = `rgba(255, 255, 255, ${opacity})`;
+                starsCtx.fill();
+                if (star.radius > 1.2) {
+                    starsCtx.shadowColor = 'rgba(255,255,255,0.1)';
+                    starsCtx.shadowBlur = 6;
+                    starsCtx.fill();
+                    starsCtx.shadowBlur = 0;
+                }
+            });
+            starsAnimationId = requestAnimationFrame(animateStars);
+        }
+
+        // ================================================================
+        // 3. SISTEMA DE PARTÍCULAS
+        // ================================================================
+        let particlesCanvas, particlesCtx, particles = [], particlesAnimationId = null;
+
+        function initParticles() {
+            const canvas = document.getElementById('particlesCanvas');
+            if (!canvas) return;
+            if (particlesAnimationId) cancelAnimationFrame(particlesAnimationId);
+
+            particlesCanvas = canvas;
+            particlesCtx = canvas.getContext('2d');
+            resizeParticlesCanvas();
+            generateParticles();
+            window.addEventListener('resize', () => { resizeParticlesCanvas(); generateParticles(); });
+            animateParticles();
+        }
+
+        function resizeParticlesCanvas() {
+            if (!particlesCanvas) return;
+            const rect = particlesCanvas.parentElement?.getBoundingClientRect() || { width: window.innerWidth, height: window.innerHeight };
+            particlesCanvas.width = rect.width || window.innerWidth;
+            particlesCanvas.height = rect.height || window.innerHeight;
+        }
+
+        function generateParticles() {
+            if (!particlesCanvas) return;
+            const count = Math.min(40, Math.floor((particlesCanvas.width * particlesCanvas.height) / 40000));
+            particles = [];
+            for (let i = 0; i < count; i++) {
+                const isHeart = Math.random() < 0.15;
+                particles.push({
+                    x: Math.random() * particlesCanvas.width,
+                    y: Math.random() * particlesCanvas.height,
+                    size: isHeart ? 12 + Math.random() * 8 : 3 + Math.random() * 4,
+                    speedX: (Math.random() - 0.5) * 0.4,
+                    speedY: (Math.random() - 0.5) * 0.4 - 0.1,
+                    opacity: Math.random() * 0.4 + 0.2,
+                    phase: Math.random() * Math.PI * 2,
+                    isHeart: isHeart,
+                    rotation: Math.random() * Math.PI * 2,
+                    rotSpeed: (Math.random() - 0.5) * 0.02
+                });
+            }
+        }
+
+        function drawHeart(ctx, x, y, size, rotation, opacity) {
+            ctx.save();
+            ctx.translate(x, y);
+            ctx.rotate(rotation);
+            ctx.globalAlpha = opacity;
+            const s = size / 16;
+            ctx.beginPath();
+            ctx.moveTo(0, -s * 4);
+            ctx.bezierCurveTo(s * -4, -s * 4, s * -8, 0, 0, s * 8);
+            ctx.bezierCurveTo(s * 8, 0, s * 4, -s * 4, 0, -s * 4);
+            ctx.closePath();
+            const gradient = ctx.createLinearGradient(-s * 4, -s * 4, s * 4, s * 4);
+            gradient.addColorStop(0, 'rgba(236, 72, 153, 0.6)');
+            gradient.addColorStop(1, 'rgba(139, 92, 246, 0.6)');
+            ctx.fillStyle = gradient;
+            ctx.fill();
+            ctx.restore();
+        }
+
+        function animateParticles() {
+            if (!particlesCanvas || !particlesCtx) return;
+            particlesCtx.clearRect(0, 0, particlesCanvas.width, particlesCanvas.height);
+            particles.forEach(p => {
+                p.x += p.speedX + Math.sin(Date.now() / 10000 + p.phase) * 0.1;
+                p.y += p.speedY + Math.cos(Date.now() / 8000 + p.phase) * 0.1;
+                p.rotation += p.rotSpeed;
+                if (p.x < 0 || p.x > particlesCanvas.width) p.speedX *= -1;
+                if (p.y < 0 || p.y > particlesCanvas.height) p.speedY *= -1;
+                p.y += Math.sin(Date.now() / 3000 + p.phase) * 0.05;
+                const opacity = p.opacity * (0.7 + 0.3 * Math.sin(Date.now() / 2000 + p.phase));
+                if (p.isHeart) {
+                    drawHeart(particlesCtx, p.x, p.y, p.size, p.rotation, opacity);
+                } else {
+                    particlesCtx.beginPath();
+                    particlesCtx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                    const gradient = particlesCtx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.size);
+                    gradient.addColorStop(0, `rgba(139, 92, 246, ${opacity * 0.6})`);
+                    gradient.addColorStop(1, `rgba(236, 72, 153, ${opacity * 0.2})`);
+                    particlesCtx.fillStyle = gradient;
+                    particlesCtx.fill();
+                }
+            });
+            particlesAnimationId = requestAnimationFrame(animateParticles);
+        }
+
+        // ================================================================
+        // 4. SISTEMA DE MODAL
+        // ================================================================
+        let modalInstance = null;
+
+        function openModal(content, options = {}) {
+            closeModal();
+            const overlay = document.createElement('div');
+            overlay.className = 'modal-overlay';
+            overlay.setAttribute('role', 'dialog');
+            overlay.setAttribute('aria-modal', 'true');
+
+            const modal = document.createElement('div');
+            modal.className = 'modal-content' + (options.carta ? ' carta-modal-content' : '');
+            modal.style.maxWidth = options.carta ? '750px' : '900px';
+
+            const closeBtn = document.createElement('button');
+            closeBtn.className = 'modal-close';
+            closeBtn.innerHTML = '✕';
+            closeBtn.setAttribute('aria-label', 'Cerrar modal');
+            closeBtn.addEventListener('click', closeModal);
+
+            const body = document.createElement('div');
+            body.className = 'modal-body';
+            body.innerHTML = content;
+
+            modal.appendChild(closeBtn);
+            modal.appendChild(body);
+            overlay.appendChild(modal);
+            document.getElementById('modal-container').appendChild(overlay);
+            modalInstance = overlay;
+
+            const escHandler = (e) => { if (e.key === 'Escape') closeModal(); };
+            document.addEventListener('keydown', escHandler);
+            overlay._escHandler = escHandler;
+
+            overlay.addEventListener('click', (e) => { if (e.target === overlay) closeModal(); });
+            document.body.style.overflow = 'hidden';
+
+            if (options.onClose) {
+                overlay._onClose = options.onClose;
+            }
+        }
+
+        function closeModal() {
+            if (modalInstance) {
+                if (modalInstance._escHandler) {
+                    document.removeEventListener('keydown', modalInstance._escHandler);
+                }
+                if (modalInstance._onClose) {
+                    modalInstance._onClose();
+                }
+                modalInstance.remove();
+                modalInstance = null;
+                document.body.style.overflow = '';
+            }
+        }
+
+        function openModalFoto(src, titulo, fecha) {
+            const content = `
+                <img src="${src}" alt="${titulo}" style="width:100%;max-height:80vh;object-fit:contain;border-radius:12px;">
+                <div class="modal-data"><h3>${titulo}</h3><span>${fecha || ''}</span></div>
+            `;
+            openModal(content);
+        }
+
+        function reproducirCancion(index) {
+            navigateTo('canciones');
+            setTimeout(() => {
+                const items = document.querySelectorAll('.playlist-item');
+                if (items[index]) {
+                    items[index].click();
+                }
+            }, 500);
+        }
+
+        window.openModal = openModal;
+        window.closeModal = closeModal;
+        window.openModalFoto = openModalFoto;
+        window.reproducirCancion = reproducirCancion;
+
+        // ================================================================
+        // 5. INICIO - CON MÁS CONTENIDO
+        // ================================================================
+        function initInicio() {
+            console.log('✨ Inicio cargado con más contenido');
+            const heroSection = document.querySelector('.hero-section');
+            if (heroSection) {
+                window.addEventListener('scroll', () => {
+                    const scrolled = window.scrollY;
+                    const contentEl = heroSection.querySelector('.hero-content');
+                    if (contentEl) {
+                        contentEl.style.transform = `translateY(${scrolled * 0.05}px)`;
+                        contentEl.style.opacity = 1 - (scrolled / 800);
+                    }
+                }, { passive: true });
+            }
+
+            // Contadores animados
+            const counters = document.querySelectorAll('.counter-number');
+            counters.forEach(counter => {
+                const text = counter.textContent;
+                if (text !== '∞' && text !== '♡') {
+                    const target = parseInt(text);
+                    let current = 0;
+                    const increment = Math.ceil(target / 30);
+                    const interval = setInterval(() => {
+                        current += increment;
+                        if (current >= target) {
+                            current = target;
+                            clearInterval(interval);
+                        }
+                        counter.textContent = current;
+                    }, 50);
+                }
+            });
+        }
+
+        // ================================================================
+        // 6. FOTOS
+        // ================================================================
+        function initFotos() {
+            console.log('📸 Galería cargada');
+            const grid = document.getElementById('fotosGrid');
+            if (!grid) return;
+            const filters = document.querySelectorAll('.filter-btn');
+            const items = grid.querySelectorAll('.foto-item');
+
+            filters.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    filters.forEach(b => { b.classList.remove('active'); b.setAttribute('aria-selected', 'false'); });
+                    btn.classList.add('active');
+                    btn.setAttribute('aria-selected', 'true');
+                    const filter = btn.dataset.filter;
+                    items.forEach(item => {
+                        const categoria = item.dataset.categoria;
+                        const show = filter === 'todos' || categoria === filter;
+                        item.style.display = show ? 'block' : 'none';
+                    });
+                });
+            });
+
+            items.forEach(item => {
+                item.addEventListener('click', () => {
+                    const isVideo = item.classList.contains('video-item');
+                    const videoEl = item.querySelector('video');
+                    let content = '';
+                    if (isVideo && videoEl) {
+                        content = `
+                            <video src="${videoEl.src}" controls autoplay style="width:100%;max-height:80vh;border-radius:12px;"></video>
+                            <div class="modal-data"><h3>${item.dataset.titulo || 'Video'}</h3><span>${item.dataset.fecha || ''}</span></div>
+                        `;
+                    } else {
+                        const img = item.querySelector('img');
+                        content = `
+                            <img src="${img?.src}" alt="${img?.alt || 'Foto'}" style="width:100%;max-height:80vh;object-fit:contain;border-radius:12px;">
+                            <div class="modal-data"><h3>${item.dataset.titulo || 'Foto'}</h3><span>${item.dataset.fecha || ''}</span></div>
+                        `;
+                    }
+                    openModal(content, {
+                        onClose: () => {
+                            const video = document.querySelector('#modal-container video');
+                            if (video) video.pause();
+                        }
+                    });
+                });
+            });
+
+            document.querySelectorAll('.video-item video').forEach(video => {
+                video.addEventListener('mouseenter', () => { video.play().catch(() => {}); });
+                video.addEventListener('mouseleave', () => { video.pause(); video.currentTime = 0; });
+            });
+        }
+
+        // ================================================================
+        // 7. CANCIONES
+        // ================================================================
+        function initCanciones() {
+            console.log('🎵 Reproductor cargado');
+            const audio = new Audio();
+            window._playerAudio = audio;
+            let currentIndex = 0;
+            let isPlaying = false;
+            let isDragging = false;
+            const playlistItems = document.querySelectorAll('.playlist-item');
+            const playBtn = document.getElementById('playBtn');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const progressFill = document.getElementById('progressFill');
+            const progressBar = document.getElementById('progressBar');
+            const currentTimeEl = document.getElementById('currentTime');
+            const totalTimeEl = document.getElementById('totalTime');
+            const volumeSlider = document.getElementById('volumeSlider');
+            const volumeBtn = document.getElementById('volumeBtn');
+            const favoriteBtn = document.getElementById('favoriteBtn');
+            const titleEl = document.getElementById('playerTitle');
+            const artistEl = document.getElementById('playerArtist');
+            const artworkImg = document.getElementById('artworkImg');
+
+            function loadSong(index) {
+                const item = playlistItems[index];
+                if (!item) return;
+                audio.src = item.dataset.file;
+                titleEl.textContent = item.dataset.titulo;
+                artistEl.textContent = item.dataset.artista;
+                artworkImg.src = item.dataset.portada;
+                playlistItems.forEach(el => el.classList.remove('active'));
+                item.classList.add('active');
+                const favs = JSON.parse(localStorage.getItem('favorites') || '[]');
+                favoriteBtn.textContent = favs.includes(item.dataset.file) ? '❤️' : '♡';
+                if (isPlaying) audio.play().catch(() => {});
+            }
+
+            function togglePlay() {
+                if (isPlaying) audio.pause();
+                else audio.play().catch(() => {});
+            }
+
+            function updatePlayButton() {
+                isPlaying = !audio.paused;
+                if (isPlaying) {
+                    playBtn.innerHTML = `<svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>`;
+                } else {
+                    playBtn.innerHTML = `<svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>`;
+                }
+            }
+
+            function prevSong() { currentIndex = (currentIndex - 1 + playlistItems.length) % playlistItems.length; loadSong(currentIndex); }
+            function nextSong() { currentIndex = (currentIndex + 1) % playlistItems.length; loadSong(currentIndex); }
+
+            function updateProgress() {
+                if (audio.duration && !isDragging) {
+                    const percent = (audio.currentTime / audio.duration) * 100;
+                    progressFill.style.width = percent + '%';
+                    currentTimeEl.textContent = formatTime(audio.currentTime);
+                }
+            }
+
+            function formatTime(seconds) {
+                const mins = Math.floor(seconds / 60);
+                const secs = Math.floor(seconds % 60);
+                return mins + ':' + secs.toString().padStart(2, '0');
+            }
+
+            audio.addEventListener('loadedmetadata', () => { totalTimeEl.textContent = formatTime(audio.duration); });
+            audio.addEventListener('timeupdate', updateProgress);
+            audio.addEventListener('play', updatePlayButton);
+            audio.addEventListener('pause', updatePlayButton);
+            audio.addEventListener('ended', nextSong);
+
+            progressBar.addEventListener('mousedown', (e) => { isDragging = true; setProgress(e); });
+            document.addEventListener('mousemove', (e) => { if (isDragging) setProgress(e); });
+            document.addEventListener('mouseup', () => {
+                if (isDragging && audio.duration) {
+                    audio.currentTime = (parseFloat(progressFill.style.width) / 100) * audio.duration;
+                }
+                isDragging = false;
+            });
+
+            function setProgress(e) {
+                const rect = progressBar.getBoundingClientRect();
+                const x = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+                progressFill.style.width = x * 100 + '%';
+                if (audio.duration) currentTimeEl.textContent = formatTime(x * audio.duration);
+            }
+
+            volumeSlider.addEventListener('input', () => { audio.volume = parseFloat(volumeSlider.value); updateVolumeIcon(); });
+            let volumeMuted = false, lastVolume = 0.8;
+            volumeBtn.addEventListener('click', () => {
+                volumeMuted = !volumeMuted;
+                if (volumeMuted) { lastVolume = audio.volume; audio.volume = 0; volumeSlider.value = 0; }
+                else { audio.volume = lastVolume; volumeSlider.value = lastVolume; }
+                updateVolumeIcon();
+            });
+
+            function updateVolumeIcon() {
+                const vol = parseFloat(volumeSlider.value);
+                volumeBtn.innerHTML = vol === 0 ?
+                    `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="4" y1="4" x2="20" y2="20"/><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/></svg>` :
+                    `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>`;
+            }
+
+            favoriteBtn.addEventListener('click', () => {
+                const file = audio.src.split('/').pop();
+                let favs = JSON.parse(localStorage.getItem('favorites') || '[]');
+                const idx = favs.indexOf(file);
+                if (idx === -1) { favs.push(file); favoriteBtn.textContent = '❤️'; }
+                else { favs.splice(idx, 1); favoriteBtn.textContent = '♡'; }
+                localStorage.setItem('favorites', JSON.stringify(favs));
+            });
+
+            playlistItems.forEach((item, index) => {
+                item.addEventListener('click', () => { currentIndex = index; loadSong(currentIndex); if (!isPlaying) audio.play().catch(() => {}); });
+            });
+
+            playBtn.addEventListener('click', togglePlay);
+            prevBtn.addEventListener('click', prevSong);
+            nextBtn.addEventListener('click', nextSong);
+
+            document.addEventListener('keydown', (e) => {
+                if (e.target.closest('input')) return;
+                if (e.key === ' ' || e.key === 'Space') { e.preventDefault(); togglePlay(); }
+                if (e.key === 'ArrowRight') nextSong();
+                if (e.key === 'ArrowLeft') prevSong();
+            });
+
+            loadSong(0);
+            window.player = { audio, play: togglePlay, next: nextSong, prev: prevSong };
+        }
+
+        // ================================================================
+        // 8. CARTA - MÚLTIPLES CARTAS (8 cartas)
+        // ================================================================
+        function initCarta() {
+            console.log('✉️ Múltiples cartas cargadas (8 cartas)');
+            const cards = document.querySelectorAll('.carta-card');
+
+            cards.forEach(card => {
+                card.addEventListener('click', () => {
+                    const id = card.dataset.carta;
+                    const data = cartasData[id];
+                    if (data) {
+                        const content = `
+                            <h2 class="carta-modal-titulo">${data.titulo}</h2>
+                            <div class="carta-modal-texto">
+                                ${data.contenido}
+                            </div>
+                        `;
+                        openModal(content, { carta: true });
+                    }
+                });
+            });
+        }
+
+        // ================================================================
+        // 9. EDITOR DE FONDO - FUNCIONALIDAD COMPLETA
+        // ================================================================
+        const bgToggle = document.getElementById('bgEditorToggle');
+        const bgControls = document.getElementById('bgEditorControls');
+        const bgPicker = document.getElementById('bgColorPicker');
+        const bgPicker2 = document.getElementById('bgColorPicker2');
+        const bgPicker3 = document.getElementById('bgColorPicker3');
+        const applyGradientBtn = document.getElementById('applyGradientBtn');
+        const resetBgBtn = document.getElementById('resetBgBtn');
+        const presetBtns = document.querySelectorAll('.preset-btn');
+
+        let bgVisible = false;
+
+        bgToggle.addEventListener('click', () => {
+            bgVisible = !bgVisible;
+            bgControls.classList.toggle('hidden', !bgVisible);
+            bgToggle.textContent = bgVisible ? '✕' : '🎨';
+        });
+
+        // Aplicar color sólido
+        bgPicker.addEventListener('input', () => {
+            applyBackground(bgPicker.value);
+        });
+
+        // Aplicar gradiente
+        applyGradientBtn.addEventListener('click', () => {
+            const color1 = bgPicker2.value;
+            const color2 = bgPicker3.value;
+            applyGradient(color1, color2);
+        });
+
+        // Presets
+        presetBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const color = btn.dataset.color;
+                bgPicker.value = color;
+                applyBackground(color);
+                presetBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+            });
+        });
+
+        // Restaurar
+        resetBgBtn.addEventListener('click', () => {
+            const defaultBg = '#05050f';
+            bgPicker.value = defaultBg;
+            applyBackground(defaultBg);
+            presetBtns.forEach(b => b.classList.remove('active'));
+            document.querySelector('.preset-btn[data-color="#05050f"]')?.classList.add('active');
+        });
+
+        function applyBackground(color) {
+            const sections = document.querySelectorAll('#seccion-canciones, #seccion-carta, .hero-section');
+            sections.forEach(section => {
+                if (section) {
+                    section.style.background = color;
+                }
+            });
+            document.querySelector('#app')?.style.setProperty('--background', color);
+            localStorage.setItem('customBg', color);
+        }
+
+        function applyGradient(color1, color2) {
+            const gradient = `linear-gradient(135deg, ${color1}, ${color2})`;
+            const sections = document.querySelectorAll('#seccion-canciones, #seccion-carta, .hero-section');
+            sections.forEach(section => {
+                if (section) {
+                    section.style.background = gradient;
+                }
+            });
+            localStorage.setItem('customBgGradient', gradient);
+        }
+
+        // Cargar fondo guardado
+        function loadSavedBackground() {
+            const savedGradient = localStorage.getItem('customBgGradient');
+            const savedColor = localStorage.getItem('customBg');
+            if (savedGradient) {
+                const sections = document.querySelectorAll('#seccion-canciones, #seccion-carta, .hero-section');
+                sections.forEach(section => {
+                    if (section) {
+                        section.style.background = savedGradient;
+                    }
+                });
+            } else if (savedColor) {
+                const sections = document.querySelectorAll('#seccion-canciones, #seccion-carta, .hero-section');
+                sections.forEach(section => {
+                    if (section) {
+                        section.style.background = savedColor;
+                    }
+                });
+                bgPicker.value = savedColor;
+            }
+        }
+
+        // ================================================================
+        // 10. INICIO
+        // ================================================================
+        document.addEventListener('DOMContentLoaded', () => {
+            const section = getSectionFromHash();
+            navigateTo(section);
+            setTimeout(loadSavedBackground, 500);
+        });
+
+        // ================================================================
+        // 11. EXPONER FUNCIONES GLOBALES
+        // ================================================================
+        window.navigateTo = navigateTo;
+        window.initStars = initStars;
+        window.initParticles = initParticles;
+        window.initInicio = initInicio;
+        window.initFotos = initFotos;
+        window.initCanciones = initCanciones;
+        window.initCarta = initCarta;
+        window.applyBackground = applyBackground;
+        window.applyGradient = applyGradient;
+        window.openModalFoto = openModalFoto;
+        window.reproducirCancion = reproducirCancion;
+    </script>
+</body>
+</html>
